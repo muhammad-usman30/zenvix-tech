@@ -127,7 +127,7 @@ em { font-style: normal; color: var(--primary); }
 .eyebrow.light { background: rgba(255, 255, 255, .12); color: #e9d5ff; border: 1px solid rgba(255, 255, 255, .18); }
 
 .ic-badge {
-  display: inline-grid; place-items: center; width: 54px; height: 54px; border-radius: 16px; flex: none;
+  display: flex !important; align-items: center; justify-content: center; place-items: center; width: 54px; height: 54px; border-radius: 16px; flex: none;
   background: var(--grad); color: #fff; box-shadow: 0 10px 22px rgba(124, 58, 237, .28);
   transition: transform .45s var(--ease);
 }
