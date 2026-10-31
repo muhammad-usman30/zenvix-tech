@@ -432,7 +432,7 @@ def contact():
           </div>
           <div class="field"><label for="details">Project Details <span class="req">*</span></label><textarea id="details" name="details" rows="5" maxlength="1000" minlength="20" required></textarea>
             <div class="field-foot"><small class="err">Please describe your project (minimum 20 characters).</small><small class="counter"><span data-counter>0</span> / 1000 characters</small></div></div>
-          <div class="field check"><input type="checkbox" id="consent" required><label for="consent">I agree to the Privacy Policy and consent to being contacted about this inquiry.</label><small class="err">You must agree to continue.</small></div>
+          <div class="field check"><input type="checkbox" id="consent" required><label for="consent">I agree to be contacted by Zenvix Technologies about this inquiry.</label><small class="err">You must agree to continue.</small></div>
           <button class="btn btn-primary btn-block" type="submit">{icon('send', 'ic ic-sm')} Send Message</button>
         </form>
       </div>

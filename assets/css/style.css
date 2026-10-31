@@ -1007,7 +1007,7 @@ em { font-style: normal; color: var(--primary); }
   .about-cta-actions { flex-direction: column; align-items: flex-start; }
   .footer-grid { grid-template-columns: 1fr; gap: 34px; }
   .footer-cta-actions, .footer-cta-actions .btn { width: 100%; }
-  .footer-bottom { flex-direction: column; }
+  .footer-bottom { flex-direction: column; padding-bottom: calc(84px + env(safe-area-inset-bottom)); } /* clear the floating WhatsApp / back-to-top buttons */
   .cards-detail .card .mini-checks { grid-template-columns: 1fr; }
   .blog-toolbar { flex-direction: column; align-items: stretch; }
   .search { min-width: 0; width: 100%; }

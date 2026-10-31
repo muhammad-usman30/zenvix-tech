@@ -267,7 +267,6 @@ def footer(page):
     </div>
     <div class="footer-bottom">
       <p>© <span data-year>2026</span> Zenvix Technologies. All rights reserved.</p>
-      <p><a href="{R}contact.html">Privacy</a><a href="{R}contact.html">Terms</a><a href="{R}sitemap.xml">Sitemap</a></p>
     </div>
   </div>
 </footer>
