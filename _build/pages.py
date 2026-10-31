@@ -425,6 +425,7 @@ def contact():
           </div>
           <div class="field"><label for="company">Company / Organization</label><input id="company" name="company" autocomplete="organization"></div>
           <div class="field"><label for="service">Service Needed <span class="req">*</span></label><select id="service" name="service" required><option value="">Select a service...</option>{opts}<option>Other</option></select><small class="err">Please select a service.</small></div>
+          <div class="field-reveal" data-other-wrap><div><div class="field"><label for="service_other">Which service do you need? <span class="req">*</span></label><input id="service_other" name="service_other" placeholder="e.g. Shopify store, Chrome extension, IT consultancy..." data-other-input><small class="err">Please tell us which service you need.</small></div></div></div>
           <div class="f-row">
             <div class="field"><label for="budget">Project Budget</label><select id="budget" name="budget"><option value="">Select a budget range...</option><option>Under $1,000</option><option>$1,000 – $5,000</option><option>$5,000 – $15,000</option><option>$15,000 – $50,000</option><option>$50,000+</option></select></div>
             <div class="field"><label for="timeline">Timeline</label><select id="timeline" name="timeline"><option value="">Select a timeline...</option><option>ASAP (within 1 month)</option><option>1–3 months</option><option>3–6 months</option><option>6+ months</option><option>Not sure yet</option></select></div>
