@@ -45,3 +45,22 @@ Then open http://localhost:8090.
 - The contact form currently validates and opens the visitor's email app (mailto) —
   replace with Contact Form 7 / WPForms or a PHP handler during conversion.
 - The footer/blog newsletter forms work the same way until a mailing service is connected.
+
+## WordPress theme
+
+Build the theme from the same templates:
+
+```bash
+python3 _build/build_wp.py
+```
+
+Output: `wordpress/zenvix-theme.zip` (upload via **Appearance → Themes → Add New → Upload Theme**).
+Hand-written theme PHP lives in `_build/wp/`; page templates are generated — don't edit them in WordPress.
+
+After activating:
+- **Appearance → Zenvix Setup** — plugin status (Contact Form 7, WP Mail SMTP) and "Run setup"
+  (creates missing pages, sets Home/Blog, imports the 3 articles; safe to re-run).
+- **Appearance → Zenvix Settings** — email, phone, WhatsApp, address, map, social links.
+- **Inquiries** — every contact form submission (also emailed to the settings email).
+- On localhost, emails are written to `wp-content/zx-mail-log.txt` instead of being sent,
+  until WP Mail SMTP is configured.

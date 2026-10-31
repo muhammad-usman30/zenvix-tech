@@ -1042,3 +1042,49 @@ em { font-style: normal; color: var(--primary); }
   .stats-band .stat::before { display: none; }
   .stats-band .stat { border-bottom: 1px solid rgba(255, 255, 255, .15); }
 }
+
+/* 13. WordPress ------------------------------------------------------------ */
+/* Admin bar: keep the fixed header below it */
+.admin-bar .site-header { top: 32px; }
+.admin-bar .drawer { top: 32px; }
+@media (max-width: 782px) { .admin-bar .site-header, .admin-bar .drawer { top: 46px; } }
+
+/* Contact Form 7 */
+.wpcf7 form.contact-form { display: grid; gap: 18px; margin-top: 22px; }
+.wpcf7-form-control-wrap { display: block; position: relative; }
+.field .wpcf7-not-valid { border-color: #e11d48; background-color: #fff5f6; }
+.wpcf7-not-valid-tip { display: block; color: #e11d48; font-size: .78rem; margin-top: 6px; }
+.wpcf7 .field.check { display: block; }
+.wpcf7 .wpcf7-list-item { margin: 0; display: block; }
+.wpcf7-acceptance label { display: flex; gap: 10px; align-items: flex-start; margin: 0; font-weight: 400; font-size: .86rem; color: var(--body); cursor: pointer; }
+.wpcf7-acceptance input { width: 20px; height: 20px; margin-top: 2px; flex: none; accent-color: var(--primary); }
+.wpcf7 input[type="submit"].btn { -webkit-appearance: none; appearance: none; cursor: pointer; font-family: inherit; }
+.btn:disabled, .btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+.wpcf7-spinner { display: block; margin: 0 auto; }
+.wpcf7 form .wpcf7-response-output { margin: 0; padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--line-2); font-size: .9rem; }
+.wpcf7 form.invalid .wpcf7-response-output, .wpcf7 form.unaccepted .wpcf7-response-output, .wpcf7 form.payment-required .wpcf7-response-output { border-color: #fda4af; background: #fff1f2; color: #be123c; }
+.wpcf7 form.failed .wpcf7-response-output, .wpcf7 form.aborted .wpcf7-response-output, .wpcf7 form.spam .wpcf7-response-output { border-color: #fdba74; background: #fff7ed; color: #9a3412; }
+.wpcf7 form.sent .wpcf7-response-output { border-color: #86efac; background: #f0fdf4; color: #166534; }
+.contact-form-fallback { margin-top: 22px; padding: 22px; border-radius: 16px; background: var(--soft); }
+.contact-form-fallback p:last-child { margin: 0; }
+.notice-admin { padding: 12px 14px; border-radius: 10px; background: #fff7ed; color: #9a3412; font-size: .88rem; }
+
+/* Blog pagination */
+.pagination { margin-top: 44px; }
+.pagination .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.pagination .page-numbers { min-width: 44px; height: 44px; padding: 0 14px; display: inline-grid; place-items: center; border-radius: 12px; border: 1.5px solid var(--line-2); color: var(--ink); font-weight: 600; transition: all .3s var(--ease); }
+.pagination .page-numbers:hover { border-color: var(--primary); color: var(--primary); }
+.pagination .page-numbers.current { background: var(--grad); color: #fff; border-color: transparent; }
+
+/* Content written in the block editor */
+.prose figure { margin: 1.6em 0; }
+.prose img { border-radius: 16px; height: auto; }
+.prose figcaption { font-size: .84rem; color: var(--muted); text-align: center; margin-top: 8px; }
+.prose .wp-block-table { overflow-x: auto; border-radius: 16px; border: 1px solid var(--line); }
+.prose .wp-block-table table { margin: 0; }
+.prose ul:not(.check-list):not(.tags), .prose ol { padding-left: 1.3em; margin: 0 0 1.2em; }
+.prose li { margin-bottom: .4em; }
+.prose blockquote { margin: 1.6em 0; padding: 18px 24px; border-left: 4px solid var(--primary); background: var(--soft); border-radius: 0 16px 16px 0; color: var(--ink); font-style: italic; }
+.prose .sources ul { padding-left: 48px; }
+.tags a { color: inherit; }
+.page-content > *:first-child { margin-top: 0; }
