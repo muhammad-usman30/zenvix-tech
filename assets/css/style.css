@@ -127,7 +127,7 @@ em { font-style: normal; color: var(--primary); }
 .eyebrow.light { background: rgba(255, 255, 255, .12); color: #e9d5ff; border: 1px solid rgba(255, 255, 255, .18); }
 
 .ic-badge {
-  display: inline-grid; place-items: center; width: 54px; height: 54px; border-radius: 16px; flex: none;
+  display: flex !important; align-items: center; justify-content: center; place-items: center; width: 54px; height: 54px; border-radius: 16px; flex: none;
   background: var(--grad); color: #fff; box-shadow: 0 10px 22px rgba(124, 58, 237, .28);
   transition: transform .45s var(--ease);
 }
@@ -190,7 +190,9 @@ em { font-style: normal; color: var(--primary); }
 .brand img { height: 46px; width: auto; transition: transform .4s var(--ease); }
 .brand:hover img { transform: scale(1.03); }
 
-.main-nav ul { list-style: none; display: flex; align-items: center; gap: 4px; }
+.main-nav, .main-nav ul { height: 100%; }
+.main-nav ul { list-style: none; display: flex; align-items: stretch; gap: 4px; }
+.main-nav li { display: flex; align-items: center; }
 .main-nav a {
   display: inline-flex; align-items: center; gap: 4px; padding: 10px 16px; border-radius: 10px;
   color: var(--ink); font-weight: 500; font-size: .95rem; position: relative;
@@ -205,11 +207,12 @@ em { font-style: normal; color: var(--primary); }
 .has-mega:hover .caret, .has-mega:focus-within .caret { transform: rotate(180deg); }
 
 .mega {
-  position: absolute; top: calc(100% - 6px); left: 50%; width: min(1040px, calc(100vw - 40px));
+  position: absolute; top: 100%; left: 50%; width: min(1040px, calc(100vw - 40px));
   transform: translate(-50%, 14px); opacity: 0; visibility: hidden; pointer-events: none;
   transition: opacity .3s var(--ease), transform .4s var(--ease), visibility .3s;
   padding-top: 10px;
 }
+.mega::before { content: ""; position: absolute; left: 0; right: 0; top: -24px; height: 34px; }
 .has-mega:hover .mega, .has-mega:focus-within .mega, .has-mega.is-open .mega { opacity: 1; visibility: visible; transform: translate(-50%, 0); pointer-events: auto; }
 .mega-inner { display: grid; grid-template-columns: 1fr 300px; gap: 10px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 30px 70px rgba(23, 19, 43, .16); }
 .mega-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 6px; }
@@ -811,7 +814,11 @@ em { font-style: normal; color: var(--primary); }
 .field input, .field select, .field textarea { width: 100%; padding: 13px 16px; border-radius: 12px; border: 1.5px solid var(--line-2); background: var(--soft); color: var(--ink); transition: border-color .25s, box-shadow .25s, background .25s; }
 .field select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c3aed' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 40px; }
 .field textarea { resize: vertical; min-height: 130px; }
-.field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(124, 58, 237, .12); }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--primary); background-color: #fff; box-shadow: 0 0 0 4px rgba(124, 58, 237, .12); }
+.field-reveal { display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -18px; transition: grid-template-rows .45s var(--ease), opacity .35s, margin-top .45s var(--ease); }
+.field-reveal > div { overflow: hidden; padding: 0 4px; margin: 0 -4px; }
+.field-reveal > div > .field { padding: 4px 0; }
+.field-reveal.is-open { grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
 .field .err { display: none; color: #e11d48; font-size: .78rem; margin-top: 6px; }
 .field.is-invalid input, .field.is-invalid select, .field.is-invalid textarea { border-color: #e11d48; background: #fff5f6; }
 .field.is-invalid .err { display: block; }

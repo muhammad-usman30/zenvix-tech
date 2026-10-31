@@ -36,6 +36,13 @@
 
   /* ---------- Mega menu: close on Escape ---------- */
   $$(".has-mega").forEach(function (li) {
+    // Hover intent: keep the panel open briefly after the pointer leaves
+    var closeTimer = null;
+    li.addEventListener("mouseenter", function () { clearTimeout(closeTimer); li.classList.add("is-open"); });
+    li.addEventListener("mouseleave", function () {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () { li.classList.remove("is-open"); }, 220);
+    });
     li.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { li.classList.remove("is-open"); var a = $("a", li); if (a) a.focus(); a && a.blur(); }
     });
@@ -286,6 +293,20 @@
     var counter = $("[data-counter]", form);
     if (details && counter) details.addEventListener("input", function () { counter.textContent = details.value.length; });
 
+    // "Other" service → reveal an extra field
+    var service = $("#service", form);
+    var otherWrap = $("[data-other-wrap]", form);
+    var otherInput = $("[data-other-input]", form);
+    function syncOther() {
+      var on = service.value === "Other";
+      otherWrap.classList.toggle("is-open", on);
+      otherInput.required = on;
+      otherInput.tabIndex = on ? 0 : -1;
+      if (on) { setTimeout(function () { otherInput.focus(); }, 250); }
+      else { otherInput.value = ""; otherInput.closest(".field").classList.remove("is-invalid"); }
+    }
+    if (service && otherWrap && otherInput) { service.addEventListener("change", syncOther); syncOther(); }
+
     var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     function validField(el) {
       var v = (el.value || "").trim();
@@ -311,7 +332,7 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if ($("#website", form).value) return; // honeypot
-      var bad = inputs.filter(function (el) { return !check(el); });
+      var bad = inputs.filter(function (el) { return !(el === otherInput && !el.required) && !check(el); });
       if (bad.length) { bad[0].focus(); return; }
       var val = function (id) { var el = $("#" + id, form); return el ? el.value.trim() : ""; };
       var lines = [
@@ -319,14 +340,14 @@
         "Email: " + val("email"),
         "Phone: " + (val("phone") || "-"),
         "Company: " + (val("company") || "-"),
-        "Service: " + val("service"),
+        "Service: " + val("service") + (val("service") === "Other" ? " — " + val("service_other") : ""),
         "Budget: " + (val("budget") || "-"),
         "Timeline: " + (val("timeline") || "-"),
         "",
         "Project details:",
         val("details")
       ];
-      var subject = "New project inquiry — " + val("service") + " (" + val("fname") + " " + val("lname") + ")";
+      var subject = "New project inquiry — " + (val("service") === "Other" ? val("service_other") : val("service")) + " (" + val("fname") + " " + val("lname") + ")";
       window.location.href = "mailto:" + TO + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(lines.join("\n"));
       var card = form.closest(".form-card");
       $(".form-view", card).hidden = true;
