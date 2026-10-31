@@ -36,6 +36,13 @@
 
   /* ---------- Mega menu: close on Escape ---------- */
   $$(".has-mega").forEach(function (li) {
+    // Hover intent: keep the panel open briefly after the pointer leaves
+    var closeTimer = null;
+    li.addEventListener("mouseenter", function () { clearTimeout(closeTimer); li.classList.add("is-open"); });
+    li.addEventListener("mouseleave", function () {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () { li.classList.remove("is-open"); }, 220);
+    });
     li.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { li.classList.remove("is-open"); var a = $("a", li); if (a) a.focus(); a && a.blur(); }
     });
