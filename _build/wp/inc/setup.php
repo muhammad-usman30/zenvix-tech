@@ -134,7 +134,30 @@ function zx_import_posts( &$log ) {
  * Run setup. Returns a log of what happened.
  */
 function zx_run_setup() {
+	global $wpdb;
+
+	// One setup at a time. After a theme switch, several admin requests can fire
+	// after_switch_theme together; INSERT IGNORE is atomic, so only one gets the lock.
+	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name = 'zx_setup_lock' AND option_value < %d", time() - 300 ) );
+	$locked = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$wpdb->options} (option_name, option_value, autoload) VALUES ('zx_setup_lock', %s, 'no')", (string) time() ) );
+	if ( ! $locked ) {
+		return array( 'Setup is already running in another request — skipped this run' );
+	}
+
+	try {
+		return zx_do_setup();
+	} finally {
+		$wpdb->delete( $wpdb->options, array( 'option_name' => 'zx_setup_lock' ) );
+	}
+}
+
+/**
+ * The setup steps (called by zx_run_setup() while holding the lock).
+ */
+function zx_do_setup() {
 	$log = array();
+	require_once ABSPATH . 'wp-admin/includes/file.php'; // get_home_path()
+	require_once ABSPATH . 'wp-admin/includes/misc.php'; // got_url_rewrite(), save_mod_rewrite_rules()
 
 	$home     = zx_ensure_page( 'home', 'Home', 0, $log );
 	zx_ensure_page( 'about', 'About', 0, $log );
@@ -150,9 +173,18 @@ function zx_run_setup() {
 	update_option( 'page_for_posts', $blog );
 	$log[] = 'Set “Home” as the front page and “Blog” as the posts page';
 
-	if ( ! get_option( 'permalink_structure' ) ) {
-		update_option( 'permalink_structure', '/%postname%/' );
-		$log[] = 'Set permalinks to /%postname%/';
+	// Post-name URLs. Only replaces WordPress's install defaults (empty, date-based or the
+	// /index.php/ fallback WordPress picks when URL rewriting isn't available) — never a structure you chose.
+	$current  = (string) get_option( 'permalink_structure' );
+	$defaults = array( '', '/%year%/%monthnum%/%day%/%postname%/', '/index.php/%year%/%monthnum%/%day%/%postname%/', '/index.php/%postname%/' );
+	if ( in_array( $current, $defaults, true ) && '/%postname%/' !== $current ) {
+		if ( got_url_rewrite() ) {
+			global $wp_rewrite; // set via WP_Rewrite so the flush below writes matching .htaccess rules
+			$wp_rewrite->set_permalink_structure( '/%postname%/' );
+			$log[] = 'Set permalinks to Post name (/%postname%/)';
+		} else {
+			$log[] = 'Permalinks left as ' . ( $current ? $current : 'Plain' ) . ': URL rewriting (Apache mod_rewrite) is not enabled on this server. Enable it, then choose Post name in Settings → Permalinks';
+		}
 	}
 
 	// Hide WordPress's default "Hello world!" post if it is untouched.
@@ -169,7 +201,11 @@ function zx_run_setup() {
 		$log[] = 'Contact Form 7 form ready';
 	}
 
-	flush_rewrite_rules();
+	flush_rewrite_rules( true ); // hard flush: also writes .htaccess
+	$htaccess = get_home_path() . '.htaccess';
+	if ( got_mod_rewrite() && ( ! file_exists( $htaccess ) || false === strpos( (string) file_get_contents( $htaccess ), 'RewriteRule' ) ) ) { // phpcs:ignore
+		$log[] = 'Could not write .htaccess — go to Settings → Permalinks and click “Save Changes” once so page links work';
+	}
 	update_option( 'zx_setup_done', ZX_VERSION );
 	update_option( 'zx_setup_log', $log );
 	return $log;
