@@ -64,3 +64,14 @@ After activating:
 - **Inquiries** — every contact form submission (also emailed to the settings email).
 - On localhost, emails are written to `wp-content/zx-mail-log.txt` instead of being sent,
   until WP Mail SMTP is configured.
+
+## Final WordPress theme (source of truth)
+
+`wp-theme/zenvix/` is the **final, production theme**, copied from the working site after QA
+(USD pricing, "Pakistan" removed outside blog posts, hero banner adjustments, manual edits).
+
+- Edit the theme here (or on the site, then copy it back) — this folder is what gets deployed.
+- `_build/build_wp.py` / `_build/wp/` produce an **older** version of the theme and do not include
+  these changes. Don't rebuild and upload `wordpress/zenvix-theme.zip` over the final theme.
+- To install: zip the folder (`cd wp-theme && zip -r zenvix.zip zenvix`) and upload via
+  **Appearance → Themes → Add New → Upload Theme**, or copy it to `wp-content/themes/zenvix/`.
